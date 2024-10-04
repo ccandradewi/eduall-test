@@ -23,7 +23,7 @@ interface Product {
 const ProductTable: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-
+  const [searchKeyword, setSearchKeyword] = useState("");
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -38,10 +38,39 @@ const ProductTable: React.FC = () => {
     };
     fetchProducts();
   }, []);
+  const handleSearchChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const keyword = event.target.value;
+    setSearchKeyword(keyword); // Update keyword pencarian
 
+    setLoading(true);
+    try {
+      if (keyword.trim() === "") {
+        const response = await axiosInstance().get("/products");
+        setProducts(response.data.data);
+      } else {
+        const response = await axiosInstance().get("/products/search", {
+          params: { keyword },
+        });
+        setProducts(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="container mx-auto py-6">
       <h1 className="text-xl font-bold mb-4">Product List</h1>
+      <input
+        type="text"
+        placeholder="Search by brand..."
+        value={searchKeyword}
+        onChange={handleSearchChange}
+        className="border border-gray-300 px-4 py-2 mb-4"
+      />
       {loading ? (
         <p>Loading...</p>
       ) : (

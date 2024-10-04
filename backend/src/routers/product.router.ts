@@ -9,6 +9,7 @@ class ProductRouter {
   }
   initializedRoutes() {
     this.router.get("/", productController.getAll);
+    this.router.get("/search", productController.search);
   }
   getRouter() {
     return this.router;

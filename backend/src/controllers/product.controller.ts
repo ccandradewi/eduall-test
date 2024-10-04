@@ -13,5 +13,18 @@ class ProductController {
       next(error);
     }
   }
+  async search(req: Request, res: Response, next: NextFunction): Promise<any> {
+    try {
+      const { keyword } = req.query;
+      if (!keyword || typeof keyword !== "string") {
+        return res.status(400).json({ message: "Keyword is required" });
+      }
+
+      const products = await productService.searchProducts(keyword);
+      res.status(200).send(products);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 export default new ProductController();
