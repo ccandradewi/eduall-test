@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model laptop_prices {
+  id                   Int      @id @default(autoincrement())
+  brand                String?  @db.VarChar(100)
+  model                String?  @db.VarChar(100)
+  screen_size          String?  @db.VarChar(100)
+  color                String?  @db.VarChar(100)
+  harddisk             String?  @db.VarChar(100)
+  cpu                  String?  @db.VarChar(100)
+  ram                  String?  @db.VarChar(100)
+  OS                   String?  @db.VarChar(100)
+  special_features     String?  @db.VarChar(255)
+  graphics             String?  @db.VarChar(100)
+  graphics_coprocessor String?  @db.VarChar(100)
+  cpu_speed            String?  @db.VarChar(100)
+  rating               Decimal? @db.Decimal(3, 2)
+  price                Decimal? @db.Decimal(10, 2)
+}
